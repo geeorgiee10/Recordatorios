@@ -9,4 +9,4 @@ Lenguajes utilizados
 - HTML
 
 ---
-URL del sitio web: https://notasjorge-81270.web.app/loguearse
+URL del sitio web: https://notasjorge-81270.web.app
