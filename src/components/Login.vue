@@ -19,9 +19,10 @@
     const user = useCurrentUser();
 
     const error = ref("");
-    const correo = ref('')
-    const contraseña = ref('')
-    const estaIniciado = ref(true)
+    const correo = ref('');
+    const contraseña = ref('');
+    const confirmarContraseña = ref('');
+    const estaIniciado = ref(true);
 
     async function iniciarSesionGoogle(){
         await signInWithPopup(auth, googleAuthProvider).then(() => {
@@ -43,6 +44,7 @@
 
     async function loginContraseña(){
         error.value = "";
+        if (!verificarContraseñas()) return;
         try{
             if(estaIniciado.value){
                 await signInWithEmailAndPassword(auth, correo.value, contraseña.value)
@@ -55,6 +57,14 @@
             error.value = err.value;
         }
     }
+
+    function verificarContraseñas() {
+    if (!estaIniciado.value && contraseña.value !== confirmarContraseña.value) {
+        error.value = "Las contraseñas no coinciden";
+        return false;
+    }
+    return true;
+}
     
 </script>
 
@@ -76,10 +86,13 @@
             <label for="contraseña">Contraseña</label>
             <input type="password" name="contraseña" id="contraseña" v-model="contraseña" placeholder="Introduce tu contraseña" required>
 
-            <a href=""></a>
+            <label for="contraseña" v-if="!estaIniciado">Confirmar contraseña</label>
+            <input type="password"  v-if="!estaIniciado" name="contraseña" id="contraseña" v-model="confirmarContraseña" placeholder="Confirmar la contraseña" required>
 
             <button type="submit">{{ estaIniciado  ? 'Iniciar sesión' : 'Registrarse' }}</button>
         </form>
+
+        <p v-if="error" class="error">{{ error }}</p>
 
         <p class="cambiarForm">
           {{ estaIniciado ? '¿No tienes ninguna cuenta?' : '¿Ya tienes una cuenta?' }}
@@ -96,9 +109,13 @@
 
 <style scoped>
 
+    .error{
+        color: red;
+    }
+
     .formulario{
         width: 40%;
-        height: 40rem;
+        height: 45rem;
         align-self: center;
         justify-self: center;
         margin-top: 2rem;
@@ -165,7 +182,7 @@
         display: flex;
         flex-direction: column;
         width: 90%;
-        height: 20rem;
+        height: 25rem;
         padding: 0.5rem;
     }
 
@@ -173,7 +190,7 @@
         font-size: 1.2rem;
         font-weight: bold;
         margin-top: 1rem;
-        margin-bottom: 1rem;
+        margin-bottom: 0.5rem;
     }
 
     .iniciarSesion input, .registrarse input{
