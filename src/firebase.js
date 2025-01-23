@@ -4,7 +4,7 @@ import { getFirestore, collection } from 'firebase/firestore'
 
 export const firebaseApp = initializeApp({
   // your application settings
-  apiKey: "AIzaSyAaectM4s-FybkpUmlsxocK5SPoF3orgXY",
+  apiKey: "claveGoogle",
   authDomain: "notasjorge-81270.firebaseapp.com",
   projectId: "notasjorge-81270",
   storageBucket: "notasjorge-81270.firebasestorage.app",
